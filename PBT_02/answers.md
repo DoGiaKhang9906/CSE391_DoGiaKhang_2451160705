@@ -287,3 +287,5 @@ Rủi ro 1: Bypass validation
 Rủi ro 2: Injection attack
     - Có thể chèn mã độc (SQL Injection, XSS)
     - Nếu backend không kiểm tra → hệ thống bị tấn công.
+
+Link video PBT_02: https://drive.google.com/file/d/1kLEfX9Q2MVIEuQ10PxLos9MCFT5VaxE4/view?usp=sharing
