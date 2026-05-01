@@ -289,5 +289,4 @@ Tuy nhiên, `<div>` vẫn có vai trò quan trọng. Trong các trường hợp 
 Tóm lại, semantic HTML không làm mất thời gian mà giúp code rõ ràng, dễ bảo trì, tốt cho SEO và thân thiện hơn với người dùng.
 
 ## Link video PBT01: 
-
-(https://drive.google.com/file/d/1W7wZhyzsB_P86isERqRvtqO7NHK2ZptW/view?usp=sharing)
+https://drive.google.com/file/d/1uw2m8pOVwGap7yjijz0nyZgtKrmsrZE8/view?usp=sharing
