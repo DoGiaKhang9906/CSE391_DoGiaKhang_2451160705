@@ -1,0 +1,12 @@
+[33m999a222[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m [STYLE] Responsive comment layout
+[33m1200f85[m [FEATURE] Display threaded comments
+[33mc1f6c24[m [FEATURE] Build comment form with Bootstrap
+[33m1b37c88[m [FEATURE] Add categories and tags cloud
+[33mf0225de[m [FEATURE] Build sticky sidebar
+[33mdae5e40[m [FEATURE] Create blog post cards layout
+[33m1b88cf4[m [REFACTOR] Convert grid to Bootstrap cols
+[33m065900b[m [REFACTOR] Convert grid to Bootstrap cols
+[33m43eefd3[m [BOOTSTRAP] Add Bootstrap CDN
+[33mf102b1d[m [SETUP] Initialize project structure
+[33mfb6fc26[m [REFACTOR] Rename project files
+[33m5bdbd73[m [SETUP] Initialize project structure
