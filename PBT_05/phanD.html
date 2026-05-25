@@ -6,13 +6,13 @@
     <title>Document</title>
     <style>
         *{
-            box-sizing: border-box;
+            box-sizing:border-box;
         }
 
         .product-grid{
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
 
         .product-card{
@@ -36,7 +36,7 @@
 </head>
 <body>
     <h1>Cửa hàng sản phẩm</h1>
-    
+
     <div class="product-grid">
         <div class="product-card">
             <h3>Sản phẩm 1</h3>
@@ -46,7 +46,7 @@
         <div class="product-card">
             <h3>Sản phẩm 2</h3>
             <p>Giá: 100.000đ</p>
-        </div>
+    </div>
 
         <div class="product-card">
             <h3>Sản phẩm 3</h3>
