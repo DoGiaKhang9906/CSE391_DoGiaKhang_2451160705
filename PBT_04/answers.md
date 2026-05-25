@@ -278,3 +278,5 @@ Giải thích:
   flex: 1;
 }
 ```
+
+Link video: https://drive.google.com/file/d/1RPZDGRcN8v0YfsGPFzMi-dvER7sdi8es/view?usp=sharing
