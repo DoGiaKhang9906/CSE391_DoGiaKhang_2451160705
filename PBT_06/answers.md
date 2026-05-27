@@ -319,3 +319,5 @@ _Bootstrap_
 - Dự án nhỏ, chỉ cần 2–3 components đơn giản
 - Cần performance cao, bundle size tối thiểu
 - Đang học CSS — nên viết tay trước để hiểu bản chất
+
+Link video: https://drive.google.com/file/d/1V2sGbt-7BrEpMOI4DumQBg_AZkkiBl_a/view?usp=sharing
