@@ -151,3 +151,5 @@ for (let i = 0; i < 5; i++) {
 `var` có function scope nên chỉ có một biến `i` duy nhất dùng chung cho cả 5 callback. Khi setTimeout chạy sau 1 giây, vòng lặp đã xong và `i = 5` rồi → cả 5 đều in `Item 5`.
 
 Dùng `let` thì mỗi lần lặp tạo ra một `i` riêng, callback nhớ đúng giá trị của lần lặp đó.
+
+Link video: https://drive.google.com/file/d/11n1Aphbtt616nKaq-xwiha4V7uEd9Pgx/view?usp=sharing
