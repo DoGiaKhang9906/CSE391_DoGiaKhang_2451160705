@@ -222,3 +222,6 @@ console.log(miniArray.map([1, 2, 3], (x) => x * 2)); // → [2,4,6]
 console.log(miniArray.filter([1, 2, 3, 4], (x) => x > 2)); // → [3,4]
 console.log(miniArray.reduce([1, 2, 3, 4], (a, b) => a + b, 0)); // → 10
 ```
+
+
+Link video: https://drive.google.com/file/d/1_nL0XT9wezpDwdgNCx8pnbKOqpsTmgma/view?usp=sharing
