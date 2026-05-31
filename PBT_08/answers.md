@@ -1,6 +1,6 @@
 # Phần A: Kiểm tra đọc hiểu
 
-## Câu A1 — Function Declaration vs Expression vs Arrow
+## Câu A1:
 
 1. Function Declaration
 
@@ -40,10 +40,9 @@ const tinhThueBaoHiem = (luong) => {
 
 4. Hoisting — Khác nhau như thế nào?
 
-- Function Declaration → Hoisted hoàn toàn
+- Function Declaration → Hoisted toàn bộ
 
 ```javascript
-// Gọi TRƯỚC khi khai báo → vẫn chạy được!
 const ketQua = tinhThueBaoHiem(15000000);
 console.log(ketQua); // { thue: 1500000, thuc_nhan: 13500000 } 
 
@@ -58,19 +57,17 @@ function tinhThueBaoHiem(luong) {
 ```javascript
 // Gọi TRƯỚC khi khai báo → LỖI!
 const ketQua = tinhThueBaoHiem(15000000);
-// ReferenceError: Cannot access 'tinhThueBaoHiem' before initialization
 
 const tinhThueBaoHiem = function(luong) { ... };
 ```
 
 ```javascript
 const ketQua = tinhThueBaoHiem(15000000);
-// ReferenceError: Cannot access 'tinhThueBaoHiem' before initialization
 
 const tinhThueBaoHiem = (luong) => { ... };
 ```
 
-## Câu A2 — Scope & Closure
+## Câu A2:
 
 1. Đoạn 1: Closure Counter
 
@@ -84,7 +81,7 @@ console.log(c.getCount()); // 2
 
 - `count` không bị reset mỗi lần gọi vì nó sống trong closure, không phải trong từng arrow function.
 
-2. Đoạn 2: var vs let trong setTimeout
+2. Đoạn 2: Phạm vi biến và Event Loop
 
 ```
 // Sau 100ms (var loop):
@@ -100,10 +97,9 @@ let: 2
 
 Tại sao `var` và `let` khác nhau trong setTimeout?
 
-- `var` có function scope — cả 3 lần lặp dùng chung 1 biến `i` duy nhất. Khi 3 callback chạy sau 100ms, loop đã kết thúc, `i` = 3 → cả 3 in ra `3`.
-- `let` có block scope — mỗi lần lặp tạo ra 1 biến `j` riêng. Mỗi callback nhớ biến `j` của lần lặp đó → in ra `0`, `1`, `2`.
+- var có function scope — cả 3 lần lặp dùng chung 1 biến i duy nhất. Khi 3 callback chạy sau 100ms, loop đã kết thúc, i = 3 → cả 3 in ra 3. let có block scope — mỗi lần lặp tạo ra 1 biến j riêng. Mỗi callback nhớ biến j của lần lặp đó → in ra 0, 1, 2.
 
-## Câu A3 — Array Methods
+## Câu A3:
 
 ```javascript
 const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -133,9 +129,9 @@ nums.map((n) => `Số ${n} là ${n % 2 === 0 ? "chẵn" : "lẻ"}`);
 [...nums].reverse();
 ```
 
-## Câu A4 — Object Destructuring & Spread
+## Câu A4:
 
-1. Destructuring
+1. Destructuring (Phân rã cấu trúc):
 
 ```javascript
 console.log(name, price, ram, color); // "iPhone 16" 25990000 8 "Titan"
@@ -165,8 +161,7 @@ console.log(product.specs.ram); // 16
 
 # Phần C: Suy luận
 
-## Câu C1 — Refactor Code
-
+## Câu C1:
 ```javascript
 const processOrders = (orders) =>
   orders
@@ -181,7 +176,7 @@ const processOrders = (orders) =>
     .sort((a, b) => b.finalTotal - a.finalTotal);
 ```
 
-## Câu C2 — Thiết kế API
+## Câu C2:
 
 ```javascript
 const miniArray = {
@@ -222,6 +217,15 @@ console.log(miniArray.map([1, 2, 3], (x) => x * 2)); // → [2,4,6]
 console.log(miniArray.filter([1, 2, 3, 4], (x) => x > 2)); // → [3,4]
 console.log(miniArray.reduce([1, 2, 3, 4], (a, b) => a + b, 0)); // → 10
 ```
+
+// ========================================== // KẾT QUẢ TEST // ========================================== console.log(miniArray.map([1, 2, 3], x => x * 2));
+// → Output: [2, 4, 6]
+
+console.log(miniArray.filter([1, 2, 3, 4], x => x > 2));
+// → Output: [3, 4]
+
+console.log(miniArray.reduce([1, 2, 3, 4], (a, b) => a + b, 0)); // → Output: 10
+
 
 
 Link video: https://drive.google.com/file/d/1_nL0XT9wezpDwdgNCx8pnbKOqpsTmgma/view?usp=sharing
