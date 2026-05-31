@@ -10,25 +10,16 @@
 | 4    | `[1, 2, 3, 4]` | `[1, 2, 3, 4]`                            |
 | 5    | `2` rồi `1`    | `Trong block: 2` → `Ngoài block: 1`       |
 
-1. Đoạn 1
-
-- Đây là bẫy của `var`: dùng biến trước khi khai báo không báo lỗi, chỉ trả `undefined` — rất khó debug.
-
-2. Đoạn 2
-
-- `let` bị hoisting nhưng nằm trong vùng từ đầu block đến dòng khai báo. Truy cập trong vùng này lỗi ngay. Đây là hành vi tốt hơn `var` vì lỗi rõ ràng.
-
-3. Đoạn 3
-
-- `const` không cho gán lại biến → lỗi ở `z = 20`.
-
-4. Đoạn 4
-
-- `arr.push(4)` OK — vì `push` không gán lại biến, chỉ sửa nội dung bên trong mảng
-
-5. Đoạn 5
-
-- `let` có block scope nên `a = 2` bên trong `{}` là biến khác hoàn toàn, không ảnh hưởng `a = 1` bên ngoài. Nếu dùng `var` thì cả hai cùng là một biến → `Ngoài block: 2`.
+- Đoạn 1 – console.log(x) trước khi gán:
+undefined — var được hoisted lên đầu scope nhưng chưa có giá trị.
+- Đoạn 2 – console.log(y) trước khi khai báo let:
+ReferenceError — let cũng được hoisted nhưng nằm trong Temporal Dead Zone (TDZ), không thể truy cập trước dòng khai báo.
+- Đoạn 3 – Gán lại const:
+TypeError — const không cho phép reassign sau khi đã khai báo.
+- Đoạn 4 – arr.push(4) trên const arr:
+[1, 2, 3, 4] — const chỉ khóa binding (không cho gán lại biến), không khóa nội dung của object/array.
+- Đoạn 5 – Block scope với let:
+"Trong block: 2" rồi "Ngoài block: 1" — hai biến a hoàn toàn độc lập nhờ block scope.
 
 ## Câu A2 — Data Types & Coercion
 
@@ -61,7 +52,7 @@
 | `0 === false`        | `false` | `false` |
 | `"" == false`        | `true`  | `true`  |
 
-- Từ giờ trở đi luôn dùng `===` lý do đơn giản: `==` tự chuyển type theo quy tắc phức tạp, kết quả khó đoán và dễ gây bug âm thầm. `===` so sánh đúng thứ mình thấy — khác type là false, không có bất ngờ.
+-Dùng "===" mặc định. Nó so sánh cả giá trị lẫn kiểu, không có bất ngờ. "==" tự ép kiểu trước khi so → kết quả khó đoán, dễ bug
 
 ## Câu A4 — Truthy & Falsy
 
@@ -102,7 +93,7 @@ const html = `<div class="card">
 
 # Phần C: Suy luận
 
-## Câu C1 — Debug JavaScript
+## Câu C1:
 
 | #   | Vị trí                           | Lỗi                                           | Sửa                                     |
 | --- | -------------------------------- | --------------------------------------------- | --------------------------------------- |
@@ -148,8 +139,17 @@ for (let i = 0; i < 5; i++) {
 }
 ```
 
-`var` có function scope nên chỉ có một biến `i` duy nhất dùng chung cho cả 5 callback. Khi setTimeout chạy sau 1 giây, vòng lặp đã xong và `i = 5` rồi → cả 5 đều in `Item 5`.
+// Test
+const gia = tinhGiaGiamGia(100000, 20);               // Lỗi 4: "100000" → 100000
+console.log("Giá sau giảm: " + gia + "đ");
 
-Dùng `let` thì mỗi lần lặp tạo ra một `i` riêng, callback nhớ đúng giá trị của lần lặp đó.
+const gia2 = tinhGiaGiamGia(50000, 110);
+console.log("Giá: " + gia2);
+
+for (let i = 0; i < 5; i++) {                         // Lỗi 6: var → let
+    setTimeout(function() {
+        console.log("Item " + i);
+    }, 1000);
+}
 
 Link video: https://drive.google.com/file/d/11n1Aphbtt616nKaq-xwiha4V7uEd9Pgx/view?usp=sharing
