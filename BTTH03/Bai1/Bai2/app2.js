@@ -1,240 +1,309 @@
-// ==================== DỮ LIỆU ====================
+let tasks =
+JSON.parse(
+localStorage.getItem("tasks")
+) || [];
 
-var danhSachCV = [];
-var indexDangSua = -1;
+let editIndex = -1;
 
-function khoiTao() {
-  var data = localStorage.getItem("danhSachCV");
-  if (data) {
-    danhSachCV = JSON.parse(data);
-  }
-  renderBang();
-  capNhatThongKe();
+const modal =
+document.getElementById("modal");
+
+const btnAddTask =
+document.getElementById("btnAddTask");
+
+const btnClose =
+document.getElementById("btnClose");
+
+const taskForm =
+document.getElementById("taskForm");
+
+const taskList =
+document.getElementById("taskList");
+
+const formTitle =
+document.getElementById("formTitle");
+
+const message =
+document.getElementById("message");
+
+const totalTask =
+document.getElementById("totalTask");
+
+const doneTask =
+document.getElementById("doneTask");
+
+const todoTask =
+document.getElementById("todoTask");
+
+const title =
+document.getElementById("title");
+
+const description =
+document.getElementById("description");
+
+const deadline =
+document.getElementById("deadline");
+
+const priority =
+document.getElementById("priority");
+
+function saveTasks(){
+
+    localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+    );
 }
 
-// ==================== RENDER ====================
+function showMessage(text){
 
-function renderBang() {
-  var tbody = document.getElementById("bang-cv");
-  tbody.innerHTML = "";
+    message.innerText = text;
 
-  if (danhSachCV.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999">Chưa có công việc nào</td></tr>';
-    return;
-  }
-
-  for (var i = 0; i < danhSachCV.length; i++) {
-    var cv = danhSachCV[i];
-    var laDaXong = cv.trangthai === "Đã xong";
-
-    // Class màu ưu tiên
-    var utClass = "";
-    if (cv.uutien === "Cao") utClass = "ut-cao";
-    else if (cv.uutien === "Trung bình") utClass = "ut-tb";
-    else utClass = "ut-thap";
-
-    var badgeClass = laDaXong ? "badge da-xong" : "badge chua-xong";
-    var rowClass = laDaXong ? "da-xong" : "";
-    var btnLabel = laDaXong ? "↩ Chưa xong" : "✔ Xong";
-
-    var row =
-      '<tr class="' +
-      rowClass +
-      '">' +
-      "<td>" +
-      cv.tieude +
-      "</td>" +
-      "<td>" +
-      (cv.mota || "—") +
-      "</td>" +
-      "<td>" +
-      cv.han +
-      "</td>" +
-      '<td class="' +
-      utClass +
-      '">' +
-      cv.uutien +
-      "</td>" +
-      '<td><span class="' +
-      badgeClass +
-      '">' +
-      cv.trangthai +
-      "</span></td>" +
-      "<td>" +
-      '<button class="btn-toggle" onclick="doiTrangThai(' +
-      i +
-      ')">' +
-      btnLabel +
-      "</button>" +
-      '<button class="btn-sua"    onclick="moForm(' +
-      i +
-      ')">Sửa</button>' +
-      '<button class="btn-xoa"    onclick="xoaCongViec(' +
-      i +
-      ')">Xóa</button>' +
-      "</td>" +
-      "</tr>";
-    tbody.innerHTML += row;
-  }
+    setTimeout(()=>{
+        message.innerText="";
+    },2000);
 }
 
-function capNhatThongKe() {
-  var tong = danhSachCV.length;
-  var daXong = 0;
-  for (var i = 0; i < danhSachCV.length; i++) {
-    if (danhSachCV[i].trangthai === "Đã xong") daXong++;
-  }
-  document.getElementById("tong-so").textContent = tong;
-  document.getElementById("da-xong").textContent = daXong;
-  document.getElementById("chua-xong").textContent = tong - daXong;
+function updateTaskSummary(){
+
+    totalTask.innerText =
+    tasks.length;
+
+    const completed =
+    tasks.filter(
+        task=>task.completed
+    ).length;
+
+    doneTask.innerText =
+    completed;
+
+    todoTask.innerText =
+    tasks.length - completed;
 }
 
-// ==================== FORM ====================
+function renderTasks(){
 
-function moForm(index) {
-  xoaLoi();
-  document.getElementById("overlay").style.display = "flex";
+    taskList.innerHTML = "";
 
-  if (index === null) {
-    indexDangSua = -1;
-    document.getElementById("tieu-de-form").textContent = "Thêm công việc";
-    document.getElementById("btn-luu").textContent = "Thêm";
+    if(tasks.length === 0){
+
+        taskList.innerHTML =
+        "<p>Chưa có công việc</p>";
+
+        updateTaskSummary();
+
+        return;
+    }
+
+    tasks.forEach((task,index)=>{
+
+        taskList.innerHTML +=
+        `
+        <div class="card ${task.completed ? 'completed':''}">
+
+            <h3>${task.title}</h3>
+
+            <p>${task.description}</p>
+
+            <p>Hạn:
+            ${task.deadline}</p>
+
+            <p>Ưu tiên:
+            ${task.priority}</p>
+
+            <p>
+            ${task.completed
+                ? 'Đã hoàn thành'
+                : 'Chưa hoàn thành'}
+            </p>
+
+            <input
+                type="checkbox"
+                class="statusCheck"
+                data-index="${index}"
+                ${task.completed ? 'checked':''}
+            >
+
+            <button
+                class="editBtn"
+                data-index="${index}">
+                Sửa
+            </button>
+
+            <button
+                class="deleteBtn"
+                data-index="${index}">
+                Xóa
+            </button>
+
+        </div>
+        `;
+    });
+
+    updateTaskSummary();
+}
+
+function resetForm(){
+
+    taskForm.reset();
+
+    editIndex = -1;
+
+    formTitle.innerText =
+    "Thêm Công Việc";
+}
+
+btnAddTask.addEventListener(
+"click",
+()=>{
+
     resetForm();
-  } else {
-    indexDangSua = index;
-    document.getElementById("tieu-de-form").textContent = "Sửa công việc";
-    document.getElementById("btn-luu").textContent = "Cập nhật";
-    var cv = danhSachCV[index];
-    document.getElementById("tieude").value = cv.tieude;
-    document.getElementById("mota").value = cv.mota;
-    document.getElementById("han").value = cv.han;
-    document.getElementById("uutien").value = cv.uutien;
-    document.getElementById("trangthai").value = cv.trangthai;
-  }
-}
 
-function dongForm() {
-  document.getElementById("overlay").style.display = "none";
-  resetForm();
-  xoaLoi();
-}
+    modal.style.display =
+    "flex";
+});
 
-function resetForm() {
-  document.getElementById("tieude").value = "";
-  document.getElementById("mota").value = "";
-  document.getElementById("han").value = "";
-  document.getElementById("uutien").value = "";
-  document.getElementById("trangthai").value = "Chưa xong";
-}
+btnClose.addEventListener(
+"click",
+()=>{
 
-// ==================== VALIDATION ====================
+    modal.style.display =
+    "none";
+});
 
-function xoaLoi() {
-  var fields = ["tieude", "han", "uutien"];
-  for (var i = 0; i < fields.length; i++) {
-    document.getElementById("loi-" + fields[i]).textContent = "";
-    document.getElementById(fields[i]).classList.remove("invalid");
-  }
-}
+taskForm.addEventListener(
+"submit",
+function(e){
 
-function hienLoi(id, msg) {
-  document.getElementById("loi-" + id).textContent = msg;
-  document.getElementById(id).classList.add("invalid");
-}
+    e.preventDefault();
 
-function validate(tieude, han, uutien) {
-  var hopLe = true;
-  xoaLoi();
+    const task = {
 
-  if (tieude.trim() === "") {
-    hienLoi("tieude", "Tiêu đề không được để trống");
-    hopLe = false;
-  }
+        title:title.value,
 
-  if (han === "") {
-    hienLoi("han", "Hạn hoàn thành không được để trống");
-    hopLe = false;
-  }
+        description:
+        description.value,
 
-  if (uutien === "") {
-    hienLoi("uutien", "Vui lòng chọn mức ưu tiên");
-    hopLe = false;
-  }
+        deadline:
+        deadline.value,
 
-  return hopLe;
-}
+        priority:
+        priority.value,
 
-// ==================== CRUD ====================
+        completed:false
+    };
 
-function luuCongViec() {
-  var tieude = document.getElementById("tieude").value;
-  var mota = document.getElementById("mota").value;
-  var han = document.getElementById("han").value;
-  var uutien = document.getElementById("uutien").value;
-  var trangthai = document.getElementById("trangthai").value;
+    if(editIndex === -1){
 
-  if (!validate(tieude, han, uutien)) return;
+        tasks.push(task);
 
-  var cv = {
-    tieude: tieude.trim(),
-    mota: mota.trim(),
-    han: han,
-    uutien: uutien,
-    trangthai: trangthai,
-  };
+        showMessage(
+        "Thêm công việc thành công"
+        );
 
-  if (indexDangSua === -1) {
-    danhSachCV.push(cv);
-    hienThongBao("Thêm công việc thành công!");
-  } else {
-    danhSachCV[indexDangSua] = cv;
-    hienThongBao("Cập nhật công việc thành công!");
-  }
+    }else{
 
-  luuLocalStorage();
-  renderBang();
-  capNhatThongKe();
-  dongForm();
-}
+        task.completed =
+        tasks[editIndex]
+        .completed;
 
-function xoaCongViec(index) {
-  var cv = danhSachCV[index];
-  var xacNhan = confirm('Bạn có chắc muốn xóa công việc "' + cv.tieude + '"?');
-  if (!xacNhan) return;
+        tasks[editIndex] =
+        task;
 
-  danhSachCV.splice(index, 1);
-  luuLocalStorage();
-  renderBang();
-  capNhatThongKe();
-  hienThongBao("Đã xóa công việc thành công!");
-}
+        showMessage(
+        "Cập nhật thành công"
+        );
+    }
 
-function doiTrangThai(index) {
-  if (danhSachCV[index].trangthai === "Chưa xong") {
-    danhSachCV[index].trangthai = "Đã xong";
-  } else {
-    danhSachCV[index].trangthai = "Chưa xong";
-  }
-  luuLocalStorage();
-  renderBang();
-  capNhatThongKe();
-}
+    saveTasks();
 
-// ==================== TIỆN ÍCH ====================
+    renderTasks();
 
-function luuLocalStorage() {
-  localStorage.setItem("danhSachCV", JSON.stringify(danhSachCV));
-}
+    modal.style.display =
+    "none";
 
-function hienThongBao(msg) {
-  var el = document.getElementById("thong-bao");
-  el.textContent = msg;
-  el.className = "success";
-  setTimeout(function () {
-    el.className = "";
-    el.textContent = "";
-  }, 3000);
-}
+    resetForm();
+});
 
-// ==================== KHỞI CHẠY ====================
-khoiTao();
+taskList.addEventListener(
+"click",
+function(e){
+
+    const index =
+    e.target.dataset.index;
+
+    if(
+        e.target.classList
+        .contains("editBtn")
+    ){
+
+        const task =
+        tasks[index];
+
+        title.value =
+        task.title;
+
+        description.value =
+        task.description;
+
+        deadline.value =
+        task.deadline;
+
+        priority.value =
+        task.priority;
+
+        editIndex = index;
+
+        formTitle.innerText =
+        "Cập Nhật Công Việc";
+
+        modal.style.display =
+        "flex";
+    }
+
+    if(
+        e.target.classList
+        .contains("deleteBtn")
+    ){
+
+        if(
+            confirm(
+            "Bạn có chắc muốn xóa?"
+            )
+        ){
+
+            tasks.splice(index,1);
+
+            saveTasks();
+
+            renderTasks();
+
+            showMessage(
+            "Xóa thành công"
+            );
+        }
+    }
+});
+
+taskList.addEventListener(
+"change",
+function(e){
+
+    if(
+        e.target.classList
+        .contains("statusCheck")
+    ){
+
+        const index =
+        e.target.dataset.index;
+
+        tasks[index].completed =
+        e.target.checked;
+
+        saveTasks();
+
+        renderTasks();
+    }
+});
+
+renderTasks();
